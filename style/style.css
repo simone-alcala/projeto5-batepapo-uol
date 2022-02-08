@@ -4,6 +4,7 @@
 
 body{
   background-color: #E5E5E5;
+  font-family: 'Roboto', sans-serif;
 }
 
 a {
@@ -80,7 +81,7 @@ footer ion-icon {
 }
 
 main{
-  margin-top: 100px;
+  margin: 100px 0;
   font-size: 14px;
 }
 
