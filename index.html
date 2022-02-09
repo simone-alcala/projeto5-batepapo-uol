@@ -12,58 +12,25 @@
   <link href="style/style.css" rel="stylesheet"/>
 </head>
 <body>
+
   <header>
     <img src="images/logo.png"/>
     <ion-icon name="people"></ion-icon>
   </header>
 
-  <main>
-
-    <section class="enter">
-      <p class="time"> (${time}) </p>
-      <p class="user"> ${user} </p>
-      <p> entra na sala... </p>
-    </section>
-
-    <section class="public-message">
-      <p class="time"> (${time}) </p>
-      <p class="user"> ${user} </p>
-      <p> para </p>
-      <p class="receiver"> ${receiver}: </p>
-      <p class="message"> ${message} </p>
-    </section>
-
-    <section class="private-message">
-      <p class="time"> (${time}) </p>
-      <p class="user"> ${user} </p>
-      <p> reservadamente para </p>
-      <p class="receiver"> ${receiver}: </p>
-      <p class="message"> ${message} </p>
-    </section>
-
-    <section class="leave">
-      <p class="time"> (${time}) </p>
-      <p class="user"> ${user} </p>
-      <p> sai da sala... </p>
-    </section>
-
-  </main>
+  <main class="main"></main>
 
   <footer>
     <section>
       <input type="textarea" placeholder="Escreva aqui..." />
-      <p class="sentType" >Enviando para ${receiver} (${sentType}) </p>
+      <p class="sentType hidden" >Enviando para ${receiver} (${sentType}) </p>
     </section>
     <ion-icon name="paper-plane-outline"></ion-icon>
   </footer>
   
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  
   <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
   <script src="script/script.js"></script>
+
 </body>
 </html>
-
-<!--receiver-->
-<!--sender-->
-<!--sentType-->

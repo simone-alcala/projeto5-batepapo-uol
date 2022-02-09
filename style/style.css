@@ -11,6 +11,10 @@ a {
   text-decoration: none;
 }
 
+p {
+  text-indent: 0.5em;
+}
+
 input:focus{
   box-shadow: 0 0 0 0;
   outline: 0;
@@ -77,6 +81,9 @@ footer ion-icon {
   color: #717171;
   font-weight: 300;
   font-size: 14px;
+}
+
+.hidden{
   display: none;
 }
 
@@ -85,7 +92,7 @@ main{
   font-size: 14px;
 }
 
-main section{
+main div{
   width: 100%;
   margin: 3px 0;
   border-radius: 2px;
@@ -95,7 +102,7 @@ main section{
   padding: 10px 18px;
 }
 
-.enter, .leave{
+.status{
   background-color: #DCDCDC;
   line-height: 20px;
 }
@@ -116,7 +123,7 @@ main section{
   font-weight: 400;
 }
 
-.user, .receiver{
+.sender, .receiver{
   color: #000000;
   font-weight: 700;
 }
@@ -125,3 +132,4 @@ main section{
   color: #000000;
   font-weight: 400;
 }
+
