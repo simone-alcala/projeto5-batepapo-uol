@@ -22,10 +22,10 @@
 
   <footer>
     <section>
-      <input type="textarea" placeholder="Escreva aqui..." />
+      <input type="text" placeholder="Escreva aqui..." />
       <p class="sentType hidden" >Enviando para ${receiver} (${sentType}) </p>
     </section>
-    <ion-icon name="paper-plane-outline"></ion-icon>
+    <ion-icon name="paper-plane-outline" onclick="sendMessage()"></ion-icon>
   </footer>
   
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

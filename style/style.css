@@ -77,6 +77,10 @@ footer ion-icon {
   font-size: 30px;
 }
 
+footer ion-icon:hover{
+  cursor: pointer;
+}
+
 .sentType{
   color: #717171;
   font-weight: 300;
