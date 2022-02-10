@@ -13,9 +13,49 @@
 </head>
 <body>
 
+  <aside class="hidden">
+    <div class="transparent" onclick="closeSideBar()"></div>
+
+    <div class="users-visibility">
+      <div class="title">Escolha um contato para enviar mensagem:</div>
+
+      <div class="user-list">
+
+        <div>
+          <ion-icon name="people"></ion-icon> Todos <ion-icon name="checkmark-sharp"></ion-icon>
+        </div>
+
+        <div>
+          <ion-icon name="person-circle"></ion-icon> João <ion-icon class="hidden" name="checkmark-sharp"></ion-icon>
+        </div>
+
+        <div>
+          <ion-icon name="person-circle"></ion-icon> Maria <ion-icon class="hidden" name="checkmark-sharp"></ion-icon>
+        </div>
+        
+      </div>
+
+      <div class="title">Escolha a visibilidade:</div>
+      
+      <div class="user-visibility"> 
+
+        <div onclick="chooseVisibility(this)">
+          <ion-icon name="lock-open-sharp"></ion-icon> Público <ion-icon class="show" name="checkmark-sharp"></ion-icon>
+        </div>
+        
+        <div onclick="chooseVisibility(this)">
+          <ion-icon name="lock-closed-sharp"></ion-icon> Reservadamente <ion-icon class="hidden show" name="checkmark-sharp"></ion-icon>  
+        </div>
+ 
+      </div>
+
+    </div>
+
+  </aside>
+
   <header>
     <img src="images/logo.png"/>
-    <ion-icon name="people"></ion-icon>
+    <ion-icon name="people" onclick="openSideBar()"></ion-icon>
   </header>
 
   <main class="main"></main>
@@ -29,6 +69,7 @@
   </footer>
   
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  
   <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
   <script src="script/script.js"></script>
 

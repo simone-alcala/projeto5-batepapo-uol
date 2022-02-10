@@ -1,4 +1,4 @@
-let   userName           = null;
+/*let   userName           = null;
 let   setUpdateNewMsg    = true;
 
 const typeStatus         = "status";
@@ -152,10 +152,30 @@ function verifySenMessageError(response){
   console.log(response.response);
 }
 
+function showUsers(){
+
+}
+
 login(true);
 
 
+*/
 
+function closeSideBar(){
+  document.querySelector("aside").classList.add("hidden");
+}
 
+function openSideBar(){
+  document.querySelector("aside").classList.remove("hidden");
+}
 
+function chooseVisibility(selection){
 
+  let classHidden = selection.childNodes[3].classList;
+
+  if (classHidden.contains("hidden")){
+
+     document.querySelector(".user-visibility .show").classList.add("hidden");
+    classHidden.remove("hidden");
+  }
+}
