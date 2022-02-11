@@ -19,32 +19,22 @@
     <div class="users-visibility">
       <div class="title">Escolha um contato para enviar mensagem:</div>
 
-      <div class="user-list">
-
-        <div>
-          <ion-icon name="people"></ion-icon> Todos <ion-icon name="checkmark-sharp"></ion-icon>
-        </div>
-
-        <div>
-          <ion-icon name="person-circle"></ion-icon> João <ion-icon class="hidden" name="checkmark-sharp"></ion-icon>
-        </div>
-
-        <div>
-          <ion-icon name="person-circle"></ion-icon> Maria <ion-icon class="hidden" name="checkmark-sharp"></ion-icon>
-        </div>
-        
-      </div>
+      <div class="user-list"></div> 
 
       <div class="title">Escolha a visibilidade:</div>
       
-      <div class="user-visibility"> 
+      <div class="user-visibility "> 
 
-        <div onclick="chooseVisibility(this)">
-          <ion-icon name="lock-open-sharp"></ion-icon> Público <ion-icon class="show" name="checkmark-sharp"></ion-icon>
+        <div class="checked send-public" onclick="chooseSentTypeUser(this,'user-visibility')">
+          <ion-icon name="lock-open-sharp"></ion-icon> 
+          Público 
+          <ion-icon name="checkmark-sharp"></ion-icon>
         </div>
         
-        <div onclick="chooseVisibility(this)">
-          <ion-icon name="lock-closed-sharp"></ion-icon> Reservadamente <ion-icon class="hidden show" name="checkmark-sharp"></ion-icon>  
+        <div class="send-private" onclick="chooseSentTypeUser(this,'user-visibility')">
+          <ion-icon name="lock-closed-sharp"></ion-icon> 
+          Reservadamente 
+          <ion-icon name="checkmark-sharp"></ion-icon>  
         </div>
  
       </div>
@@ -63,7 +53,7 @@
   <footer>
     <section>
       <input type="text" placeholder="Escreva aqui..." />
-      <p class="sentType hidden" >Enviando para ${receiver} (${sentType}) </p>
+      <div class="specificMessage"></div>
     </section>
     <ion-icon name="paper-plane-outline" onclick="sendMessage()"></ion-icon>
   </footer>

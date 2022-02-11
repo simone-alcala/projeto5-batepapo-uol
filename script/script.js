@@ -1,11 +1,21 @@
-/*let   userName           = null;
-let   setUpdateNewMsg    = true;
-
 const typeStatus         = "status";
 const typeMessage        = "message";
 const typePrivateMessage = "private_message";
 const main               = document.querySelector(".main");
-const arrayMessages      = [];
+//const arrayMessages      = [];
+
+let   userName           = null;
+let   setUpdateNewMsg    = true;
+let   sentType           = typeMessage;
+let   sentUser           = "Todos";
+let   arrayParticipants  = [];
+
+document.querySelector("footer input").addEventListener("keyup", function(event) {
+  event.preventDefault();
+  if (event.keyCode === 13){
+    sendMessage();
+  }
+});
 
 function login(semErro){
   if (semErro){
@@ -17,9 +27,14 @@ function login(semErro){
 }
 
 function validateUser(){
+
+  if (userName === "Todos"){
+    login(false);
+  }
+
   let promise = axios.post("https://mock-api.driven.com.br/api/v4/uol/participants",{name: userName});
   
-  promise.then(getMessages);
+  promise.then(startChat);
   promise.catch(verifyLoginError);
  
 }
@@ -30,10 +45,13 @@ function verifyLoginError(response){
   }
 }
 
+function startChat(){
+  getMessages();
+  getParticipants();
+}
+
 function getMessages(){
-
   document.querySelector("footer input").focus();
-
   let promise = axios.get("https://mock-api.driven.com.br/api/v4/uol/messages");
   promise.then(renderMessages);
 }
@@ -68,7 +86,7 @@ function renderMessages(messages){
               <p class="message"> ${messages.data[i].text}</p>  
             </div>`
   
-      } else if (messages.data[i].to === "Todos" || messages.data[i].to === userName) {
+      } else if (messages.data[i].to === "Todos" || messages.data[i].to === userName || messages.data[i].from === userName)  {
   
         main.innerHTML += 
           ` <div class="private-message">
@@ -98,6 +116,7 @@ function getNewMessages(){
   setUpdateNewMsg = false;
   setInterval(getMessages, 3000); 
   setInterval(keepConnected,5000);
+  setInterval(getParticipants,10000);
 }
 
 function keepConnected(){
@@ -108,7 +127,7 @@ function keepConnected(){
 }
 
 function verifyKeepConnectedOk(response){
-  console.log(response);
+  //console.log(response);
 }
 
 function verifyKeepConnectedError(response){
@@ -122,10 +141,12 @@ function sendMessage(){
 
     let messageObj = 
       { from: userName,
-        to: "Todos", 
+        to:   sentUser, 
         text: message,
-        type: "message"
+        type: sentType
       };
+
+      console.log(messageObj);
 
     let response = axios.post ("https://mock-api.driven.com.br/api/v4/uol/messages", messageObj);
     
@@ -133,14 +154,6 @@ function sendMessage(){
     response.catch(verifySenMessageError);
   }
 }
-
-document.querySelector("footer input").addEventListener("keyup", function(event) {
-  event.preventDefault();
-  if (event.keyCode === 13){
-    sendMessage();
-  }
-});
-
 
 function verifySenMessageOk(response){
   getMessages();
@@ -152,15 +165,6 @@ function verifySenMessageError(response){
   console.log(response.response);
 }
 
-function showUsers(){
-
-}
-
-login(true);
-
-
-*/
-
 function closeSideBar(){
   document.querySelector("aside").classList.add("hidden");
 }
@@ -169,13 +173,86 @@ function openSideBar(){
   document.querySelector("aside").classList.remove("hidden");
 }
 
-function chooseVisibility(selection){
+function chooseSentTypeUser(selection,checkType){
 
-  let classHidden = selection.childNodes[3].classList;
-
-  if (classHidden.contains("hidden")){
-
-     document.querySelector(".user-visibility .show").classList.add("hidden");
-    classHidden.remove("hidden");
+  if (!selection.classList.contains("checked")){
+    document.querySelector("."+checkType+" .checked").classList.remove("checked");
+    selection.classList.add("checked");
   }
+
+  if ( selection.classList.contains("send-private") ){
+    sentType = typePrivateMessage;
+  } else {
+    sentType = typeMessage;
+  }
+
+  if ( selection.classList.contains("toAll") ){
+    sentUser = "Todos";
+  } else if ( selection.classList.contains("toSpecific") ){
+    sentUser = selection.childNodes[2].textContent;
+  }
+
+  let textTypeMessage = ""
+
+  if (sentType === typeMessage){
+    textTypeMessage = "publicamente";
+  } else {
+    textTypeMessage = "reservadamente";
+  }
+/*
+  if (sentUser !== "Todos"){
+    if ( !verifyActiveUser() ){
+      sentUser ="Todos";
+    }
+  }
+*/
+  if (sentType === typePrivateMessage || sentUser !== "Todos"){
+    document.querySelector(".specificMessage").innerHTML = 
+    `<p class="sentType " >Enviando para ${sentUser} (${textTypeMessage}) </p>`;
+  } 
+  
 }
+
+function getParticipants(){
+   
+  let promise = axios.get("https://mock-api.driven.com.br/api/v4/uol/participants");
+  
+  promise.then(renderParticipants);
+  promise.catch(verifyGetParticipantsError);
+}
+
+function renderParticipants(promise){
+
+  arrayParticipants = promise.data;
+  
+  let participants = document.querySelector(".user-list");
+   
+  participants.innerHTML  = `<div class="checked toAll" onclick="chooseSentTypeUser(this,'user-list')">
+                              <ion-icon name="people"></ion-icon> Todos <ion-icon name="checkmark-sharp"></ion-icon>
+                            </div>`
+
+                   
+  for (let i = 0; i < promise.data.length ; i++){
+    participants.innerHTML += `<div class="toSpecific" onclick="chooseSentTypeUser(this,'user-list')">
+                                <ion-icon name="person-circle"></ion-icon> 
+                                ${promise.data[i].name} 
+                                <ion-icon name="checkmark-sharp"></ion-icon>
+                              </div>`
+  } 
+
+}
+
+function verifyGetParticipantsError(promise){
+  console.log(promise);
+}
+
+function verifyActiveUser(){
+  return arrayParticipants.includes(sentUser);
+}
+
+login(true);
+
+
+
+
+
