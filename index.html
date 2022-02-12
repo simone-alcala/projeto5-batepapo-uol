@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chat UOL</title>
+  <link href="images/icon.png" rel="icon" type="image/x-icon" /> 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"> 
@@ -13,42 +14,50 @@
 </head>
 <body>
 
-  <aside class="hidden">
-    <div class="transparent" onclick="closeSideBar()"></div>
-
-    <div class="users-visibility">
-      <div class="title">Escolha um contato para enviar mensagem:</div>
-
-      <div class="user-list"></div> 
-
-      <div class="title">Escolha a visibilidade:</div>
-      
-      <div class="user-visibility "> 
-
-        <div class="checked send-public" onclick="chooseSentTypeUser(this,'user-visibility')">
-          <ion-icon name="lock-open-sharp"></ion-icon> 
-          Público 
-          <ion-icon name="checkmark-sharp"></ion-icon>
-        </div>
-        
-        <div class="send-private" onclick="chooseSentTypeUser(this,'user-visibility')">
-          <ion-icon name="lock-closed-sharp"></ion-icon> 
-          Reservadamente 
-          <ion-icon name="checkmark-sharp"></ion-icon>  
-        </div>
- 
-      </div>
-
-    </div>
-
-  </aside>
-
   <header>
     <img src="images/logo.png"/>
     <ion-icon name="people" onclick="openSideBar()"></ion-icon>
   </header>
 
   <main class="main"></main>
+
+  <aside class="hidden">
+
+    <section class="transparent" onclick="closeSideBar()"></section>
+
+    <section class="users-visibility">
+
+      <div class="title">Escolha um contato para enviar mensagem:</div>
+
+      <div class="user-chat"></div> 
+
+      <div class="title">Escolha a visibilidade:</div>
+      
+      <div class="user-visibility "> 
+
+        <div class="send public checked" onclick="chooseSentTypeUser(this,'user-visibility')">
+          <div><ion-icon name="lock-open-sharp"> </ion-icon> <p> Público </p> </div>
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </div>
+        
+        <div class="send private" onclick="chooseSentTypeUser(this,'user-visibility')">
+          <div><ion-icon name="lock-closed-sharp"> </ion-icon> <p> Reservadamente </p> </div>          
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </div>
+ 
+      </div>
+
+    </section>
+
+  </aside>
+
+  <section class="login ">
+    <img src="images/logo 2.png" alt="logo.png" />
+    <input type="text" placeholder="Digite seu nome" />
+    <div class="errorMessage"></div>
+    <button onclick="loginChat()">Entrar</button>
+    
+  </section>
 
   <footer>
     <section>
@@ -59,7 +68,6 @@
   </footer>
   
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  
   <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
   <script src="script/script.js"></script>
 
