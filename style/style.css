@@ -197,7 +197,7 @@ aside ion-icon:last-child{
   --ionicon-stroke-width: 100px;
 }
 
-.login{
+.login, .loading{
   width: 100%;
   height: 100vh;
   background-color: #FFFFFF;
@@ -210,7 +210,9 @@ aside ion-icon:last-child{
   z-index: 3;
 }
 
-.login img{
+
+
+.login img, .loading img{
   width: 130px;
   height: 92px;
   margin: 72px 0;
@@ -243,6 +245,11 @@ aside ion-icon:last-child{
   color: #f2cccc;
 }
 
+.loading p{
+  margin-top: 20px;
+}
+
 .hidden{
   display: none;
 }
+

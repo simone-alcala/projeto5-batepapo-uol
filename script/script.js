@@ -40,6 +40,13 @@ function validateUser(){
 function loginOk(){
   document.querySelector(".login input").value = "";
   document.querySelector(".login").classList.add("hidden");
+  document.querySelector(".loading").classList.remove("hidden");
+
+  setTimeout(loadPage,3000)
+}
+
+function loadPage(){
+  document.querySelector(".loading").classList.add("hidden");
   startChat();
 }
 
