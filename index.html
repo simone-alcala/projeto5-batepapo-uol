@@ -36,12 +36,12 @@
       
       <div class="user-visibility "> 
 
-        <div class="send public checked" onclick="chooseSentTypeUser(this,'user-visibility')">
+        <div class="send public checked" onclick="chooseSentTypeUser(this,'user-visibility')" data-identifier="visibility">
           <div><ion-icon name="lock-open-sharp"> </ion-icon> <p> Público </p> </div>
           <ion-icon name="checkmark-outline"></ion-icon>
         </div>
         
-        <div class="send private" onclick="chooseSentTypeUser(this,'user-visibility')">
+        <div class="send private" onclick="chooseSentTypeUser(this,'user-visibility')" data-identifier="visibility">
           <div><ion-icon name="lock-closed-sharp"> </ion-icon> <p> Reservadamente </p> </div>          
           <ion-icon name="checkmark-outline"></ion-icon>
         </div>
@@ -54,9 +54,9 @@
 
   <section class="login">
     <img src="images/logo 2.png" alt="logo.png" />
-    <input type="text" placeholder="Digite seu nome" />
+    <input type="text" placeholder="Digite seu nome" data-identifier="enter-name" />
     <div class="errorMessage"></div>
-    <button onclick="loginChat()">Entrar</button>
+    <button onclick="loginChat()" data-identifier="start">Entrar</button>
   </section>
 
   <section class="loading hidden">
@@ -70,7 +70,7 @@
       <input type="text" placeholder="Escreva aqui..." />
       <div class="specificMessage"></div>
     </section>
-    <ion-icon name="paper-plane-outline" onclick="sendMessage()"></ion-icon>
+    <ion-icon name="paper-plane-outline" onclick="sendMessage()" data-identifier="send-message"></ion-icon>
   </footer>
   
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

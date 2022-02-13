@@ -3,11 +3,22 @@ const typeMessage        = "message";
 const typePrivateMessage = "private_message";
 const main               = document.querySelector(".main");
 
+let   arrayOldMsg        = [];
 let   userName           = null;
 let   setUpdateNewMsg    = true;
 let   sentType           = typeMessage;
 let   sentUser           = "Todos";
 let   arrayParticipants  = [];
+
+document.querySelector("section input").focus();
+document.querySelector("footer input").value = "";
+
+document.querySelector("section input").addEventListener("keyup", function(event) {
+  event.preventDefault();
+  if (event.keyCode === 13){
+    loginChat();
+  }
+});
 
 document.querySelector("footer input").addEventListener("keyup", function(event) {
   event.preventDefault();
@@ -70,10 +81,14 @@ function startChat(){
 function getMessages(){
   document.querySelector("footer input").focus();
   let promise = axios.get("https://mock-api.driven.com.br/api/v4/uol/messages");
+
   promise.then(renderMessages);
+  promise.catch(renderMessages);
 }
 
 function renderMessages(messages){
+
+  let renderMessage = messages.data.filter(filterMessages);
 
   let textTypeMessage = ""
 
@@ -86,53 +101,63 @@ function renderMessages(messages){
   document.querySelector(".specificMessage").innerHTML = 
     `<p class="sentType " >Enviando para ${sentUser} (${textTypeMessage}) </p>`;
 
-  main.innerHTML = "";
+ // main.innerHTML = "";
+
+  renderMessage.forEach(message => {
+
+    if (message.type === typeStatus){
+
+      main.innerHTML += 
+        ` <div class="status" data-identifier="message">
+            <p class="time">(${message.time})</p>
+            <p class="sender">${message.from}</p>
+            <p> ${message.text}</p> 
+          </div>`
+
+    } else if (message.type === typeMessage){
+
+      main.innerHTML += 
+        ` <div class="public-message" data-identifier="message">
+            <p class="time">(${message.time})</p>
+            <p class="sender">${message.from}</p>
+            <p> para </p>
+            <p class="receiver">${message.to}</p>
+            <p class="message"> ${message.text}</p>  
+          </div>`
+
+    } else if ( showPrivateMessages(message) ) {
+
+      main.innerHTML += 
+        ` <div class="private-message" data-identifier="message">
+            <p class="time">(${message.time})</p>
+            <p class="sender">${message.from}</p>
+            <p> reservadamente para </p>
+            <p class="receiver">${message.to}</p>
+            <p class="message"> ${message.text}</p>  
+          </div>`
+    }  
+
+  });
     
-  for (let i = 0; i < messages.data.length ; i++ ){
-
-    //if ( !arrayMessages.includes(messages.data[i]) ){
-
-      //arrayMessages.push(messages.data[i]);
-
-      if (messages.data[i].type === typeStatus){
-
-        main.innerHTML += 
-          ` <div class="status">
-              <p class="time">(${messages.data[i].time})</p>
-              <p class="sender">${messages.data[i].from}</p>
-              <p> ${messages.data[i].text}</p> 
-            </div>`
+  arrayOldMsg = [...messages.data];
   
-      } else if (messages.data[i].type === typeMessage){
-  
-        main.innerHTML += 
-          ` <div class="public-message">
-              <p class="time">(${messages.data[i].time})</p>
-              <p class="sender">${messages.data[i].from}</p>
-              <p> para </p>
-              <p class="receiver">${messages.data[i].to}</p>
-              <p class="message"> ${messages.data[i].text}</p>  
-            </div>`
-  
-      } else if (messages.data[i].to === "Todos" || messages.data[i].to === userName || messages.data[i].from === userName)  {
-  
-        main.innerHTML += 
-          ` <div class="private-message">
-              <p class="time">(${messages.data[i].time})</p>
-              <p class="sender">${messages.data[i].from}</p>
-              <p> reservadamente para </p>
-              <p class="receiver">${messages.data[i].to}</p>
-              <p class="message"> ${messages.data[i].text}</p>  
-            </div>`
-      }  
-    //}
-
-  }
   scrollPage();
   
   if (setUpdateNewMsg){
     getNewMessages();
   }
+}
+
+function filterMessages(newMessage){
+  return !arrayOldMsg.some( item => item.time === newMessage.time ); 
+}
+
+function showPrivateMessages( message ){
+  return (message.to === "Todos" || message.to === userName || message.from === userName);
+}
+
+function getMessagesError(promise){
+  console.log(promise);
 }
 
 function scrollPage(){
@@ -149,7 +174,6 @@ function getNewMessages(){
 
 function keepConnected(){
   let response = axios.post("https://mock-api.driven.com.br/api/v4/uol/status",{name: userName});
-  
   response.then(verifyKeepConnectedOk);
   response.catch(verifyKeepConnectedError);
 }
@@ -163,22 +187,15 @@ function verifyKeepConnectedError(response){
 }
 
 function sendMessage(){
-
   let message = document.querySelector("footer input").value;
-
   if (message !== ""){
-
     let messageObj = 
       { from: userName,
         to:   sentUser, 
         text: message,
         type: sentType
       };
-
-      console.log(messageObj);
-
-    let response = axios.post ("https://mock-api.driven.com.br/api/v4/uol/messages", messageObj);
-    
+    let response = axios.post ("https://mock-api.driven.com.br/api/v4/uol/messages", messageObj);   
     response.then(verifySendMessageOk);
     response.catch(verifySendMessageError);
   }
@@ -190,7 +207,7 @@ function verifySendMessageOk(response){
 }
 
 function verifySendMessageError(response){
-  document.querySelector("footer input").value = "";
+  
   window.location.reload();
   console.log(response.response);
 }
@@ -209,7 +226,10 @@ function chooseSentTypeUser(selection,checkType){
     document.querySelector("."+checkType+" .checked").classList.remove("checked");
     selection.classList.add("checked");
   }
+  setVisibityAndUser(selection);
+}
 
+function setVisibityAndUser(selection){
   if ( selection.classList.contains("private") ){
     sentType = typePrivateMessage;
   } else if ( selection.classList.contains("public") ){
@@ -219,7 +239,6 @@ function chooseSentTypeUser(selection,checkType){
   } else if ( selection.classList.contains("toSpecific") ){
     sentUser = selection.querySelector("p").innerText;
   }
-
 }
 
 function getParticipants(){
@@ -235,25 +254,38 @@ function renderParticipants(promise){
   arrayParticipants = promise.data;
   
   let participants = document.querySelector(".user-chat");
-   
-  participants.innerHTML  = `<div class="send checked toAll" onclick="chooseSentTypeUser(this,'user-chat')">
+
+  
+  participants.innerHTML  = `<div class="send toAll" onclick="chooseSentTypeUser(this,'user-chat')" data-identifier="participant">
                               <div><ion-icon name="people"></ion-icon> <p>Todos </p></div>
                               <ion-icon name="checkmark-outline"></ion-icon>
-                            </div>`
+                            </div>`                       
 
-                   
-  for (let i = 0; i < promise.data.length ; i++){
-    participants.innerHTML += `<div class="send toSpecific" onclick="chooseSentTypeUser(this,'user-chat')">
-                                <div><ion-icon name="person-circle"></ion-icon> 
-                                  <p>${promise.data[i].name} </p>
-                                </div>
-                                <ion-icon name="checkmark-outline"></ion-icon>
-                              </div>`
-  } 
+  let classChecked = "";
+
+  promise.data.forEach(item => {
+
+    if (sentUser === item.name ) {
+      classChecked = "checked";
+    } else {
+      classChecked = "";
+    }
+
+    participants.innerHTML +=  `<div class="send toSpecific ${classChecked}" onclick="chooseSentTypeUser(this,'user-chat')" data-identifier="participant">
+                                  <div><ion-icon name="person-circle"></ion-icon> 
+                                    <p>${item.name} </p>
+                                  </div>
+                                  <ion-icon name="checkmark-outline"></ion-icon>
+                                </div> `
+  });      
 
   if (!verifyActiveUser()) {
     sentUser = "Todos";
   }
+
+  if ( sentUser === "Todos") {
+    document.querySelector(".toAll").classList.add("checked");
+  }    
 
 }
 
